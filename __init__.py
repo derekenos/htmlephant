@@ -1,4 +1,4 @@
-"""HTMLephant - A simple, streaming HTML generator.
+"""HTMLephant - A small and lazy HTML generator.
 """
 ###############################################################################
 # Constants
