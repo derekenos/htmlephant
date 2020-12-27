@@ -7,7 +7,9 @@ from testy import (
 
 from __init__ import (
     Anchor,
+    Br,
     Div,
+    Span,
 )
 
 ###############################################################################
@@ -17,7 +19,7 @@ from __init__ import (
 assertYields = lambda ins, expected: assertEqual(''.join(ins()), expected)
 
 ###############################################################################
-# Test Single Element Classes
+# Tests
 ###############################################################################
 
 def test_python_version():
@@ -28,6 +30,8 @@ def test_python_version():
             'Tests require Python >= 3.6 for its kwargs order preservation, '
             f'you\'re using: {major}.{minor}'
         )
+
+#### Attribute stuff
 
 def test_missing_required_attrs():
     assertRaises(AssertionError, Anchor)
@@ -62,6 +66,8 @@ def test_escaped_attr_value():
 </a>
 """)
 
+#### Text stuff
+
 def test_nonvoid_no_text():
     assertYields(Anchor(href='http://example.com'),
 """<a href="http://example.com">
@@ -82,6 +88,65 @@ def test_nonvoid_with_escaped_text():
 </a>
 """)
 
+def test_void_no_text():
+    assertYields(Br(),
+"""<br>
+""")
+
+def test_void_with_text():
+    assertRaises(AssertionError, Br, 'abcd')
+
+# Children stuff
+
+def test_single_child():
+    assertYields(Div(children=(Span(),)),
+"""<div>
+  <span>
+  </span>
+</div>
+""")
+
+def test_lots_of_complicated_kids():
+    assertYields(Div(children=[
+        Span(f'{i}', id=i, _class=f'style-{i}', children=(Span(f'{i + 1}'),))
+        for i in range(3)
+    ]),
+"""<div>
+  <span id="0" class="style-0">
+    0
+    <span>
+      1
+    </span>
+  </span>
+  <span id="1" class="style-1">
+    1
+    <span>
+      2
+    </span>
+  </span>
+  <span id="2" class="style-2">
+    2
+    <span>
+      3
+    </span>
+  </span>
+</div>
+""")
+
+def test_append_child():
+    el = Div()
+    el.append_child(Span('0'))
+    el.children[0].append_child(Span('1'))
+    assertYields(el,
+"""<div>
+  <span>
+    0
+    <span>
+      1
+    </span>
+  </span>
+</div>
+""")
 
 if __name__ == '__main__':
     cli(globals())
