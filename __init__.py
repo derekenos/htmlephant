@@ -1,5 +1,6 @@
 """HTMLephant - A small and lazy HTML generator.
 """
+
 ###############################################################################
 # Constants
 ###############################################################################
@@ -46,7 +47,7 @@ class HTMLElement:
             raise AssertionError(
                 'missing required attrs {} for tag "{}"'.format(
                     [k for k in self.REQUIRED_ATTRS if k not in attrs],
-                    tag_name
+                    self.TAG_NAME
                 )
             )
         # Save the text content value.
