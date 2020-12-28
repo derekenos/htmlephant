@@ -37,10 +37,11 @@ class HTMLElement:
         if not hasattr(self, 'TAG_NAME'):
             raise AssertionError('Please subclass HTMLElement and define a '
                                  'TAG_NAME attribute')
-        # Assert that text has not been specified for a void-type element.
-        if self.IS_VOID and text:
+        # Assert that text and children are None for a void-type element.
+        if self.IS_VOID and (text or children is not None):
             raise AssertionError(
-                'text not allowed for void tag "{}"'.format(self.TAG_NAME)
+                'text and children are prohibited for void tag "{}"'
+                .format(self.TAG_NAME)
             )
         # Assert that all required attributes were specified.
         if any(k not in attrs for k in self.REQUIRED_ATTRS):
@@ -55,14 +56,14 @@ class HTMLElement:
         # Save the attributes dict.
         self.attrs = attrs
         # Save the child list.
-        self.children = children or []
+        self.children = None if self.IS_VOID else (children or [])
 
     @staticmethod
     def encode_attr_key(k):
         """
-        Yield the attribute key with any leading underscore stripped (to provide
-        for the specification of attribute name keyword arguments that would
-        otherwise collide with a Python keyword, e.g. class) and, if a
+        Yield the attribute key with any leading underscore stripped (to
+        provide for the specification of attribute name keyword arguments that
+        would otherwise collide with a Python keyword, e.g. class) and, if a
         leading underscore is present, replace all following underscores with
         a hyphens (to provide for the specification of attribute names
         containing a hyphen which is standard HTML stuff). Note that both of
@@ -100,13 +101,6 @@ class HTMLElement:
         while num > 0:
             yield ' '
             num -= 1
-
-    def append_child(self, child):
-        """Append child to self.children.
-        """
-        if self.IS_VOID:
-            raise NotImplementedError('can not append children to a void element')
-        self.children.append(child)
 
     def escaped_text(self):
         """
@@ -336,7 +330,8 @@ def Document(body_els, head_els=()):
     yield from Html(
         lang='en',
         children=(
-            Head(children=(Meta(charset='utf-8'),) + tuple(head_els)),
+            Head(children=(
+                Meta(charset='utf-8'),) + tuple(head_els)),
             Body(children=body_els)
         )
     )()

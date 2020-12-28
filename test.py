@@ -1,6 +1,7 @@
 
 from testy import (
     assertEqual,
+    assertNone,
     assertRaises,
     cli,
 )
@@ -101,6 +102,9 @@ def test_void_with_text():
 
 # Children stuff
 
+def test_void_children_is_none():
+    assertNone(Br().children)
+
 def test_single_child():
     assertYields(Div(children=(Span(),)),
 """<div>
@@ -136,10 +140,10 @@ def test_lots_of_complicated_kids():
 </div>
 """)
 
-def test_append_child():
+def test_appending_children():
     el = Div()
-    el.append_child(Span('0'))
-    el.children[0].append_child(Span('1'))
+    el.children.append(Span('0'))
+    el.children[0].children.append(Span('1'))
     assertYields(el,
 """<div>
   <span>
