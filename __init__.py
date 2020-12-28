@@ -280,7 +280,7 @@ class Td(HTMLElement):
 class Template(HTMLElement):
     TAG_NAME = 'template'
 
-class TextArea(HTMLElement):
+class Textarea(HTMLElement):
     TAG_NAME = 'textarea'
     INDENT_TEXT = False
 

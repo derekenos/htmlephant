@@ -9,7 +9,10 @@ from __init__ import (
     Anchor,
     Br,
     Div,
+    Document,
+    Script,
     Span,
+    Textarea,
 )
 
 ###############################################################################
@@ -147,6 +150,51 @@ def test_append_child():
   </span>
 </div>
 """)
+
+#### Document stuff
+
+def test_empty_document():
+    assertEqual(''.join(Document(())),
+"""<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+  </body>
+</html>
+""")
+
+def test_nonempty_document():
+    assertEqual(''.join(Document(
+        body_els=(Span('abcd'),),
+        head_els=(Script('console.log("hello")'),)
+    )),
+"""<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script>
+      console.log("hello")
+    </script>
+  </head>
+  <body>
+    <span>
+      abcd
+    </span>
+  </body>
+</html>
+""")
+
+#### Test no text indent
+
+def test_no_text_indent():
+    assertYields(Textarea('abcd'),
+"""<textarea>
+abcd
+</textarea>
+""")
+
 
 if __name__ == '__main__':
     cli(globals())
