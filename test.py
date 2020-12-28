@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from testy import (
     assertEqual,
@@ -8,13 +9,20 @@ from testy import (
 
 from __init__ import (
     Anchor,
+    Body,
     Br,
     Div,
     Document,
+    GenReader,
+    Head,
+    Html,
     HTMLElement,
+    Meta,
     Script,
     Span,
+    Style,
     Textarea,
+    Title,
 )
 
 ###############################################################################
@@ -125,6 +133,31 @@ def test_void_no_text():
 def test_void_with_text():
     assertRaises(AssertionError, Br, 'abcd')
 
+def test_no_text_indent():
+    assertYields(Textarea('abcd'),
+"""<textarea>
+abcd
+</textarea>
+""")
+
+def test_script_text_is_not_escaped():
+    # Expect '<' and '>' to not be escaped.
+    assertYields(
+        Script('console.log("<test>")'),
+"""<script>
+  console.log("<test>")
+</script>
+""")
+
+def test_style_text_is_not_escaped():
+    # Expect '>' to not be escaped.
+    assertYields(
+        Style('body > div { font-family: arial; }'),
+"""<style>
+  body > div { font-family: arial; }
+</style>
+""")
+
 ###############################################################################
 # Element Children Tests
 ###############################################################################
@@ -182,6 +215,52 @@ def test_appending_children():
 </div>
 """)
 
+def test_a_from_scratch_document():
+    assertYields(
+        Html(lang='en', children=[
+            Head(children=[
+                Meta(charset='utf-8'),
+                Title('a <good> page'),
+                Script('console.log("<hello>")'),
+                Style(
+"""body {
+  font-family: arial;
+}
+body > div {
+  padding: 8px;
+}"""
+                )
+            ]),
+            Body(children=[
+                Div('some text', id="id-1", _class="class-1")
+            ])
+        ]),
+"""<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      a &lt;good&gt; page
+    </title>
+    <script>
+      console.log("<hello>")
+    </script>
+    <style>
+      body {
+        font-family: arial;
+      }
+      body > div {
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="id-1" class="class-1">
+      some text
+    </div>
+  </body>
+</html>
+""")
+
 ###############################################################################
 # Document Tests
 ###############################################################################
@@ -219,14 +298,21 @@ def test_nonempty_document():
 </html>
 """)
 
-#### Test no text indent
 
-def test_no_text_indent():
-    assertYields(Textarea('abcd'),
-"""<textarea>
-abcd
-</textarea>
-""")
+###############################################################################
+# GenReader Tests
+###############################################################################
+
+def test_genreader_with_nonascii_chars():
+    expected = \
+"""<div>
+  ĀāĂăĄą
+</div>
+""".encode('utf-8')
+    reader = GenReader(Div('ĀāĂăĄą')(), encoding='utf-8')
+    buf = bytearray(len(expected))
+    reader.readinto(buf)
+    assertEqual(buf, expected)
 
 
 if __name__ == '__main__':

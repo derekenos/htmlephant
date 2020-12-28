@@ -29,6 +29,9 @@ class HTMLElement:
     # along with its tags.
     INDENT_TEXT = True
 
+    # Specify whether to escape the text.
+    ESCAPE_TEXT = True
+
     # Specify the number of spaces to indent this element's children.
     CHILD_INDENT = 2
 
@@ -138,11 +141,13 @@ class HTMLElement:
 
         # Yield the text.
         if self.text:
+            text = (self.escape_text(self.text) if self.ESCAPE_TEXT
+                    else self.text)
             if not self.INDENT_TEXT:
-                yield from self.escape_text(self.text)
+                yield from text
             else:
                 yield from self._pad_gen(indent + self.CHILD_INDENT)
-                for c in self.escape_text(self.text):
+                for c in text:
                     yield c
                     if c == '\n':
                         yield from self._pad_gen(indent + self.CHILD_INDENT)
@@ -247,6 +252,7 @@ class Paragraph(HTMLElement):
 
 class Script(HTMLElement):
     TAG_NAME = 'script'
+    ESCAPE_TEXT = False
 
 class Select(HTMLElement):
     TAG_NAME = 'select'
@@ -262,6 +268,7 @@ class Strong(HTMLElement):
 
 class Style(HTMLElement):
     TAG_NAME = 'style'
+    ESCAPE_TEXT = False
 
 class Table(HTMLElement):
     TAG_NAME = 'table'
@@ -284,6 +291,9 @@ class Th(HTMLElement):
 
 class Thead(HTMLElement):
     TAG_NAME = 'thead'
+
+class Title(HTMLElement):
+    TAG_NAME = 'title'
 
 class Tr(HTMLElement):
     TAG_NAME = 'tr'
