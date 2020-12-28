@@ -11,6 +11,7 @@ from __init__ import (
     Br,
     Div,
     Document,
+    HTMLElement,
     Script,
     Span,
     Textarea,
@@ -20,10 +21,11 @@ from __init__ import (
 # Helpers
 ###############################################################################
 
-assertYields = lambda ins, expected: assertEqual(''.join(ins()), expected)
+_join = ''.join
+assertYields = lambda ins, expected: assertEqual(_join(ins()), expected)
 
 ###############################################################################
-# Tests
+# Misc Tests
 ###############################################################################
 
 def test_python_version():
@@ -35,7 +37,28 @@ def test_python_version():
             f'you\'re using: {major}.{minor}'
         )
 
-#### Attribute stuff
+###############################################################################
+# Encoding / Escaping Method Tests
+###############################################################################
+
+def test_encode_attr_key_no_underscores():
+    assertEqual(_join(HTMLElement.encode_attr_key('testkey')), 'testkey')
+
+def test_encode_attr_key_escaped():
+    assertEqual(_join(HTMLElement.encode_attr_key('__test_key')), '-test-key')
+
+def test_encode_attr_key_not_escaped():
+    assertEqual(_join(HTMLElement.encode_attr_key('-_test_key')), '-_test_key')
+
+def test_encode_attr_value_with_double_quotes():
+    assertEqual(_join(HTMLElement.encode_attr_value('"x"')), '&quot;x&quot;')
+
+def test_escape_text():
+    assertEqual(_join(HTMLElement.escape_text('<html>')), '&lt;html&gt;')
+
+###############################################################################
+# Element Attribute Tests
+###############################################################################
 
 def test_missing_required_attrs():
     assertRaises(AssertionError, Anchor)
@@ -70,7 +93,9 @@ def test_escaped_attr_value():
 </a>
 """)
 
-#### Text stuff
+###############################################################################
+# Element Text Tests
+###############################################################################
 
 def test_nonvoid_no_text():
     assertYields(Anchor(href='http://example.com'),
@@ -100,7 +125,9 @@ def test_void_no_text():
 def test_void_with_text():
     assertRaises(AssertionError, Br, 'abcd')
 
-# Children stuff
+###############################################################################
+# Element Children Tests
+###############################################################################
 
 def test_void_children_is_none():
     assertNone(Br().children)
@@ -155,7 +182,9 @@ def test_appending_children():
 </div>
 """)
 
-#### Document stuff
+###############################################################################
+# Document Tests
+###############################################################################
 
 def test_empty_document():
     assertEqual(''.join(Document(())),

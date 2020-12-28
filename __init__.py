@@ -95,25 +95,26 @@ class HTMLElement:
                 yield c
 
     @staticmethod
-    def _pad_gen(num):
-        """Yield the specified number of SPACE characters.
+    def escape_text(text):
         """
-        while num > 0:
-            yield ' '
-            num -= 1
-
-    def escaped_text(self):
+        Yield text with any offending character replaced with its corresponding
+        HTML entity.
         """
-        Yield self.text with any offending character replaced with its
-        corresponding HTML entity.
-        """
-        for c in self.text:
+        for c in text:
             if c == '<':
                 yield from Entities.LESS_THAN
             elif c == '>':
                 yield from Entities.GREATER_THAN
             else:
                 yield c
+
+    @staticmethod
+    def _pad_gen(num):
+        """Yield the specified number of SPACE characters.
+        """
+        while num > 0:
+            yield ' '
+            num -= 1
 
     def __call__(self, indent=0):
         """
@@ -138,10 +139,10 @@ class HTMLElement:
         # Yield the text.
         if self.text:
             if not self.INDENT_TEXT:
-                yield from self.escaped_text()
+                yield from self.escape_text(self.text)
             else:
                 yield from self._pad_gen(indent + self.CHILD_INDENT)
-                for c in self.escaped_text():
+                for c in self.escape_text(self.text):
                     yield c
                     if c == '\n':
                         yield from self._pad_gen(indent + self.CHILD_INDENT)
