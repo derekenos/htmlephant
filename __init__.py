@@ -119,7 +119,7 @@ class HTMLElement:
             yield ' '
             num -= 1
 
-    def __call__(self, indent=0):
+    def html(self, indent=0):
         """
         Yield the HTML characters that comprise this element and all of its
         children.
@@ -156,7 +156,7 @@ class HTMLElement:
         # Yield the children.
         if self.children:
             for child in self.children:
-                yield from child(indent + self.CHILD_INDENT)
+                yield from child.html(indent + self.CHILD_INDENT)
 
         # Maybe yield closing tag.
         if not self.IS_VOID:
@@ -345,7 +345,7 @@ def Document(body_els, head_els=()):
                 Meta(charset='utf-8'),) + tuple(head_els)),
             Body(children=body_els)
         )
-    )()
+    ).html()
 
 # Define a GenReader-wrapped version of Document.
 DocumentStream = lambda *args, **kwargs: GenReader(Document(*args, **kwargs))

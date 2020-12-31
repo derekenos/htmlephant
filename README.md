@@ -47,7 +47,7 @@ from __init__ import (
     Title,
 )
 
-# Construct your document using element classes.                                
+# Construct your document using element classes.
 el = Html(lang='en', children=[
     Head(children=[
 	Meta(charset='utf-8'),
@@ -58,9 +58,8 @@ el = Html(lang='en', children=[
     ])
 ])
 
-# Invoke the instance to get an HTML character generator
-# for it and its children.
-gen = el()
+# Get an HTML character generator for the element and its children.
+gen = el.html()
 ```
 
 ### Consume a few characters

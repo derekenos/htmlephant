@@ -30,7 +30,7 @@ from __init__ import (
 ###############################################################################
 
 _join = ''.join
-assertYields = lambda ins, expected: assertEqual(_join(ins()), expected)
+assertYields = lambda ins, expected: assertEqual(_join(ins.html()), expected)
 
 ###############################################################################
 # Misc Tests
@@ -309,7 +309,7 @@ def test_genreader_with_nonascii_chars():
   ĀāĂăĄą
 </div>
 """.encode('utf-8')
-    reader = GenReader(Div('ĀāĂăĄą')(), encoding='utf-8')
+    reader = GenReader(Div('ĀāĂăĄą').html(), encoding='utf-8')
     buf = bytearray(len(expected))
     reader.readinto(buf)
     assertEqual(buf, expected)
