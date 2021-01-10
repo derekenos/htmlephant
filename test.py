@@ -271,6 +271,7 @@ def test_empty_document():
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
   </body>
@@ -286,6 +287,7 @@ def test_nonempty_document():
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
       console.log("hello")
     </script>

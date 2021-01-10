@@ -341,8 +341,16 @@ def Document(body_els, head_els=()):
     yield from Html(
         lang='en',
         children=(
-            Head(children=(
-                Meta(charset='utf-8'),) + tuple(head_els)),
+            Head(
+                children=(
+                    Meta(charset='utf-8'),
+                    Meta(
+                        name='viewport',
+                        content='width=device-width, initial-scale=1'
+                    )
+                )
+                + tuple(head_els)
+            ),
             Body(children=body_els)
         )
     ).html()
