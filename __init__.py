@@ -171,6 +171,15 @@ class HTMLElement:
 class VoidHTMLElement(HTMLElement):
     IS_VOID = True
 
+# Define a NOEL (No-Element) class that implements a static html() method that
+# allows it to be used wherever a normal element can appear, but which yields
+# only a single empty string. This is useful for inline conditionals, e.g.
+# x = Element(<variable>) if <variable> else NOEL
+class NOEL():
+    @staticmethod
+    def html(indent=None):
+        yield ''
+
 ###############################################################################
 # Common Element Subclasses
 ###############################################################################
