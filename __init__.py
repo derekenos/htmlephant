@@ -356,9 +356,9 @@ def Document(body_els, head_els=()):
                     Meta(
                         name='viewport',
                         content='width=device-width, initial-scale=1'
-                    )
+                    ),
+                    *head_els
                 )
-                + tuple(head_els)
             ),
             Body(children=body_els)
         )
