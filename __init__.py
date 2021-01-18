@@ -200,6 +200,9 @@ class Button(HTMLElement):
 class Div(HTMLElement):
     TAG_NAME = 'div'
 
+class Em(HTMLElement):
+    TAG_NAME = 'em'
+
 class Form(HTMLElement):
     TAG_NAME = 'form'
 
@@ -246,8 +249,15 @@ class Label(HTMLElement):
 class Li(HTMLElement):
     TAG_NAME = 'li'
 
+class Link(VoidHTMLElement):
+    TAG_NAME = 'link'
+    REQUIRED_ATTRS = ('href', 'rel')
+
 class Meta(VoidHTMLElement):
     TAG_NAME = 'meta'
+
+class Nav(HTMLElement):
+    TAG_NAME = 'nav'
 
 class Ol(HTMLElement):
     TAG_NAME = 'ol'
@@ -259,15 +269,22 @@ class Option(HTMLElement):
 class Paragraph(HTMLElement):
     TAG_NAME = 'p'
 
+class Picture(HTMLElement):
+    TAG_NAME = 'picture'
+
 class Script(HTMLElement):
     TAG_NAME = 'script'
     ESCAPE_TEXT = False
+
+class Section(HTMLElement):
+    TAG_NAME = 'section'
 
 class Select(HTMLElement):
     TAG_NAME = 'select'
 
 class Source(VoidHTMLElement):
     TAG_NAME = 'source'
+    REQUIRED_ATTRS = ('srcset',)
 
 class Span(HTMLElement):
     TAG_NAME = 'span'
@@ -309,6 +326,16 @@ class Tr(HTMLElement):
 
 class Ul(HTMLElement):
     TAG_NAME = 'ul'
+
+###############################################################################
+# <meta> helpers
+###############################################################################
+
+# Standard: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name
+StdMeta = lambda k, v: Meta(name=k, content=v)
+
+# OpenGraph: https://ogp.me/
+OGMeta = lambda k, v: Meta(property=f'og:{k}', content=v)
 
 ###############################################################################
 # GenReader Class
