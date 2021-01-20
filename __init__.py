@@ -244,7 +244,7 @@ class Input(VoidHTMLElement):
 
 class Label(HTMLElement):
     TAG_NAME = 'label'
-    REQUIRED_ATTRS = ('for',)
+    REQUIRED_ATTRS = ('_for',)
 
 class Li(HTMLElement):
     TAG_NAME = 'li'
