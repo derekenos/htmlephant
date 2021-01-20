@@ -130,6 +130,8 @@ class HTMLElement:
         yield from self.TAG_NAME
         if self.attrs:
             for k, v in self.attrs.items():
+                if v is None:
+                    continue
                 yield ' '
                 yield from self.encode_attr_key(k)
                 yield '='
@@ -272,6 +274,10 @@ class Paragraph(HTMLElement):
 class Picture(HTMLElement):
     TAG_NAME = 'picture'
 
+class PictureSource(VoidHTMLElement):
+    TAG_NAME = 'source'
+    REQUIRED_ATTRS = ('srcset',)
+
 class Script(HTMLElement):
     TAG_NAME = 'script'
     ESCAPE_TEXT = False
@@ -281,10 +287,6 @@ class Section(HTMLElement):
 
 class Select(HTMLElement):
     TAG_NAME = 'select'
-
-class Source(VoidHTMLElement):
-    TAG_NAME = 'source'
-    REQUIRED_ATTRS = ('srcset',)
 
 class Span(HTMLElement):
     TAG_NAME = 'span'
@@ -327,6 +329,13 @@ class Tr(HTMLElement):
 class Ul(HTMLElement):
     TAG_NAME = 'ul'
 
+class Video(HTMLElement):
+    TAG_NAME = 'video'
+
+class VideoSource(VoidHTMLElement):
+    TAG_NAME = 'source'
+    REQUIRED_ATTRS = ('src',)
+
 ###############################################################################
 # <meta> helpers
 ###############################################################################
@@ -336,6 +345,9 @@ StdMeta = lambda k, v: Meta(name=k, content=v)
 
 # OpenGraph: https://ogp.me/
 OGMeta = lambda k, v: Meta(property=f'og:{k}', content=v)
+
+# Microdata meta helper.
+MDMeta = lambda k, v: Meta(itemprop=k, content=v)
 
 ###############################################################################
 # GenReader Class
