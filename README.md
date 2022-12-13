@@ -9,7 +9,7 @@ All specific element classes derive from either `HTMLElement` or `VoidHTMLElemen
 
 ### Constructor
 The `HTMLElement` constructor looks like this:
-```
+```python
 HTMLElement(self, text=None, children=None, **attrs)
 ```
 where:
@@ -21,7 +21,7 @@ where:
 Some HTML attribute names are not valid Python keyword names, e.g. `class`, `data-count`.
 
 One solution is to pass an unpacked dict:
-```
+```python
 Div(**{'class': 'fancy', 'data-count': 1})
 ```
 
@@ -37,7 +37,7 @@ Examples:
 
 ## Document from Scratch Example
 
-```
+```python
 from __init__ import (
     Body,
     Div,
@@ -63,20 +63,20 @@ gen = el.html()
 ```
 
 ### Consume a few characters
-```
+```python
 print([next(gen) for _ in range(5)])
 ```
 #### Output
-```
+```python
 ['<', 'h', 't', 'm', 'l']
 ```
 
 ### Be overeager and join the characters into a string
-```
+```python
 print(''.join(gen))
 ```
 #### Output
-```
+```html
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -94,7 +94,7 @@ print(''.join(gen))
 
 ## Use the Document helper
 
-```
+```python
 from __init__ import (
     Div,
     Document,
@@ -113,7 +113,7 @@ gen = Document(
 print(''.join(gen))
 ```
 ### Output
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
