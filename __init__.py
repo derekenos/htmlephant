@@ -236,6 +236,9 @@ class Hr(VoidHTMLElement):
 class Head(HTMLElement):
     TAG_NAME = 'head'
 
+class Header(HTMLElement):
+    TAG_NAME = 'header'
+
 class Img(VoidHTMLElement):
     TAG_NAME = 'img'
     REQUIRED_ATTRS = ('src', 'alt')
@@ -254,6 +257,9 @@ class Li(HTMLElement):
 class Link(VoidHTMLElement):
     TAG_NAME = 'link'
     REQUIRED_ATTRS = ('href', 'rel')
+
+class Main(HTMLElement):
+    TAG_NAME = 'main'
 
 class Meta(VoidHTMLElement):
     TAG_NAME = 'meta'
