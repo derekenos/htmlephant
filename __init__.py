@@ -186,6 +186,9 @@ class NOEL():
 # Common Element Subclasses
 ###############################################################################
 
+class Address(HTMLElement):
+    TAG_NAME = 'address'
+
 class Anchor(HTMLElement):
     TAG_NAME = 'a'
     REQUIRED_ATTRS = ('href',)
@@ -331,6 +334,10 @@ class Thead(HTMLElement):
 
 class Title(HTMLElement):
     TAG_NAME = 'title'
+
+class Time(HTMLElement):
+    TAG_NAME = 'time'
+    REQUIRED_ATTRS = ('datetime',)
 
 class Tr(HTMLElement):
     TAG_NAME = 'tr'
