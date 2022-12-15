@@ -190,6 +190,9 @@ class Anchor(HTMLElement):
     TAG_NAME = 'a'
     REQUIRED_ATTRS = ('href',)
 
+class Article(HTMLElement):
+    TAG_NAME = 'article'
+
 class Body(HTMLElement):
     TAG_NAME = 'body'
 
