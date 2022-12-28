@@ -196,6 +196,10 @@ class Anchor(HTMLElement):
 class Article(HTMLElement):
     TAG_NAME = 'article'
 
+class BlockQuote(HTMLElement):
+    TAG_NAME = 'blockquote'
+    REQUIRED_ATTRS = ('cite',)
+
 class Body(HTMLElement):
     TAG_NAME = 'body'
 
