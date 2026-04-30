@@ -260,6 +260,16 @@ class H6(HTMLElement):
     TAG_NAME = "h6"
 
 
+Hn = {
+    1: H1,
+    2: H2,
+    3: H3,
+    4: H4,
+    5: H5,
+    6: H6,
+}
+
+
 class Html(HTMLElement):
     TAG_NAME = "html"
     REQUIRED_ATTRS = ("lang",)
