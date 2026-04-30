@@ -198,6 +198,11 @@ class Anchor(HTMLElement):
     REQUIRED_ATTRS = ("href",)
 
 
+class Audio(HTMLElement):
+    TAG_NAME = "audio"
+    REQUIRED_ATTRS = ("src",)
+
+
 class Body(HTMLElement):
     TAG_NAME = "body"
 
