@@ -1,6 +1,7 @@
 """HTMLephant - A small and lazy HTML generator.
 """
 
+
 ###############################################################################
 # Constants
 ###############################################################################
@@ -209,6 +210,15 @@ class Button(HTMLElement):
     TAG_NAME = "button"
 
 
+class Details(HTMLElement):
+    TAG_NAME = "details"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.children or not isinstance(self.children[0], Summary):
+            raise AssertionError("Summary element is required as first child")
+
+
 class Div(HTMLElement):
     TAG_NAME = "div"
 
@@ -340,6 +350,10 @@ class Style(HTMLElement):
 
 class Table(HTMLElement):
     TAG_NAME = "table"
+
+
+class Summary(HTMLElement):
+    TAG_NAME = "summary"
 
 
 class Tbody(HTMLElement):

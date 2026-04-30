@@ -11,6 +11,7 @@ from __init__ import (
     Anchor,
     Body,
     Br,
+    Details,
     Div,
     Document,
     GenReader,
@@ -21,6 +22,7 @@ from __init__ import (
     Script,
     Span,
     Style,
+    Summary,
     Textarea,
     Title,
 )
@@ -89,6 +91,14 @@ def test_present_required_attrs():
 </a>
 """,
     )
+
+
+def test_missing_details_summary():
+    assertRaises(AssertionError, Details)
+
+
+def test_details_with_summary():
+    Details(children=[Summary()])
 
 
 def test_multiple_attrs():
